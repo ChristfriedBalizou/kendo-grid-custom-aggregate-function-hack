@@ -1,64 +1,100 @@
 /**
  * Created by christfried Balizou on 05/01/16.
  */
-var aggregate = (function(){
-    'use strict';
+
+function Exception(name, message) {
+
+    if (!(this instanceof arguments.callee)) {
+        return new Exception(name, message);
+    }
+
+    this.message = message;
+    this.name = name;
+    this.toString = function () {
+        return this.name + " " + this.message;
+    }
+}
+
+// Check jquery library
+if (!jQuery) {
+    alert("jQuery lib is missing, please make sure jQuery is load before this script.");
+    throw Exception("ExceptionMissingDependency",
+        "jQuery lib is missing, please make sure jQuery is load before this script.");
+}
+
+// Check kendo plugin
+if (!jQuery.fn.kendoGrid) {
+    alert("Kendo plugin is missing, please make sure Kendo is load before this script.");
+    throw Exception("ExceptionMissingDependency",
+        "Kendo plugin is missing, please make sure Kendo is load before this script.")
+}
+
+// The hack to make custom aggregation work
+var jQuery = (function ($, aggregate) {
+
+    var kendoGridGroupRowHtml = $.fn.kendoGrid.widget.fn._groupRowHtml;
+
+    $.fn.kendoGrid.widget.fn._groupRowHtml = function (e, t, n, i, r, o) {
+        var str = aggregate.process(this, e);
+        r.groupFooterTemplate = function () {
+            return str;
+        };
+        return kendoGridGroupRowHtml.call(this, e, t, n, i, r, o);
+    };
+
+    return $;
+
+})(jQuery || {}, (function () {
 
     var instance;
-    if(!instance){
+    if (!instance) {
         instance = new Aggregate();
     }
     return instance;
 
-    /*
-     * FIXME this loop is too complicated should clean it
-     * Logic: If field === field we found the field we store the value
-     * else if data contains items we resend the array
-     * else we reach bottom we loop on the rest
-     * */
-    function loop(r, f, d) {
-        for (var k in d) {
-            if (d[k].field === f) {
-                if (d[k].hasSubgroups) {
-                    loop(r, f, d[k].items);
-                } else {
-                    var data = d[k].items;
-                    for(var i = 0, len = data.length; i < len; i++) {
-                        r.push(data[i].get(f));
-                    }
-                }
-            }
-        }
-    }
-
-    function cback(r){
-        var total = 0;
-        for(var i = 0, len = r.length; i < len; i++){
-            total += r[i];
-        }
-        return total;
-    }
-
-    function Aggregate(){
+    function Aggregate() {
+        // TODO free memory after grid is rendered
         var memory = {};
 
-        var save = function(key){
-            (memory[key] ? (memory[key].index += 1) :
-                (memory[key] = {index : 0}));
-            return memory[key];
-        };
+        function loop(data) {
+            return data.hasSubgroups ? loop(data.items) : data.items;
+        }
 
         return {
-            template: function(field, $g, callback){
-                var size = save(field + $g.attr('id')).index
-                    ,ds = $g.data('kendoGrid').dataSource
-                    ,results = [];
+            process: function (grid, group) {
+                var gridId = grid.element[0].id
+                    , cols = grid.columns;
 
-                callback = cback;
+                memory[gridId] = {};
+                for (var i = 0, len = cols.length; len > i; i++) {
+                    memory[gridId][cols[i].field] = cols[i].groupFooterTemplate;
+                }
 
-                loop(results, field, ds.view());
-                return callback ? callback.call(null, results) : "";
+                return this.template(gridId, loop(group), grid._groups());
+            },
+            template: function (key, data, size) {
+                // TODO test grid with details
+                if (!data) return "";
+
+                var $row = '<tr class="k-group-footer">'
+                    , grid = memory[key];
+
+                $row += (new Array(size + 1))
+                    .join('<td class="k-group-cell">&nbsp;</td>');
+
+                for (var field in grid) {
+                    var str = grid[field];
+                    $row += '<td class="k-group-cell">' + (str ? str(data) : "") + '</td>';
+                }
+
+                return $row + '</tr>';
+            },
+            remove: function (key) {
+                return delete memory[key];
+            },
+            clear: function () {
+                memory = {};
             }
         };
     }
-})();
+})());

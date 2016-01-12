@@ -32,15 +32,19 @@
         },
         columns: [
             {field: 'firstName', title: 'First Name'},
-            {field: 'lastName', title: 'Last Name', groupFooterTemplate : function(){
-                return aggregate.template('lastName', $element);
-            }},
-            {field: 'age', title: 'Age', groupFooterTemplate : function(){
-                return aggregate.template('age', $element);
-            }}
+            {field: 'lastName', title: 'Last Name'},
+            {field: 'age', title: 'Age', groupFooterTemplate : aggregateAge}
         ]
     };
 
+
+    function aggregateAge(data){
+        var total = 0;
+        for(var i = 0, len = data.length; i < len; i++){
+            total += data[i].age;
+        }
+        return "Age: " + total;
+    }
 
     // Render elements
     $element.kendoGrid(config);
