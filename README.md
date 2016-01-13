@@ -10,7 +10,7 @@ using [columns.groupFooterTemplate](http://docs.telerik.com/kendo-ui/api/javascr
 * Import [Kendo](http://www.telerik.com/kendo-ui) lib
 * Import this script (kendo.aggregate.helper.js)
 
-* You custom aggregation function will receive a list of data per group which is exactly what you need to aggregate yourself. Return the value/ string that should be display. *
+*You custom aggregation function will receive a list of data per group which is exactly what you need to aggregate yourself. Return the value/ string that should be display.*
 
 #### Html
 ```
@@ -51,7 +51,7 @@ columns: [
 This git repo did not import *kendo library* because of license.
 Please think about adding it yourself in your project before using it.
 
-* AND BUY A LICENSE. (I LOVE KENDO  :-) ) *
+*_AND BUY A LICENSE!!!_*
 
 ### Todo
 
