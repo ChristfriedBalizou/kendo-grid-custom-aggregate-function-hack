@@ -1,4 +1,4 @@
-# kendoGrid custom aggregate function
+# kendoGrid custom aggregate function [(Demo)](http://christfriedbalizou.github.io/kendo-grid-custom-aggregate-function-hack)
 
 The kendo lib does not allow to inject your custom library. 
 This script allow you to add your custom aggregation function
