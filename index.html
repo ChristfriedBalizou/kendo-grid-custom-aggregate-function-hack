@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>KendoGrid custom aggregate function by ChristfriedBalizou</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>KendoGrid custom aggregate function</h1>
+        <p>KendoGrid custom aggregate function hack</p>
+
+        <p class="view"><a href="https://github.com/ChristfriedBalizou/kendo-grid-custom-aggregate-function-hack">View the Project on GitHub <small>ChristfriedBalizou/kendo-grid-custom-aggregate-function-hack</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/ChristfriedBalizou/kendo-grid-custom-aggregate-function-hack/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/ChristfriedBalizou/kendo-grid-custom-aggregate-function-hack/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/ChristfriedBalizou/kendo-grid-custom-aggregate-function-hack">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="kendogrid-custom-aggregate-function" class="anchor" href="#kendogrid-custom-aggregate-function" aria-hidden="true"><span class="octicon octicon-link"></span></a>kendoGrid custom aggregate function</h1>
+
+<p>The kendo lib does not allow to inject your custom library. 
+This script allow you to add your custom aggregation function
+using <a href="http://docs.telerik.com/kendo-ui/api/javascript/ui/grid#configuration-columns.groupFooterTemplate">columns.groupFooterTemplate</a> option.</p>
+
+<h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<ul>
+<li>Import <a href="http://api.jquery.com/">jQuery</a> lib</li>
+<li>Import <a href="http://www.telerik.com/kendo-ui">Kendo</a> lib</li>
+<li><p>Import this script (kendo.aggregate.helper.js)</p></li>
+<li><p>You custom aggregation function will receive a list of data per group which is exactly what you need to aggregate yourself. Return the value/ string that should be display. *</p></li>
+</ul>
+
+<h4>
+<a id="html" class="anchor" href="#html" aria-hidden="true"><span class="octicon octicon-link"></span></a>Html</h4>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;!-- YOUR CSS HERE --&gt;
+&lt;/head&gt;
+&lt;body&gt;
+...
+&lt;div id="#grid"&gt;&lt;/div&gt;
+...
+&lt;script&gt;&lt;!-- jQuery here --&gt;&lt;/script&gt;
+&lt;script&gt;&lt;!-- kendo.all.min.js here --&gt;&lt;/script&gt;
+&lt;script src="kendo.aggregate.helper.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h4>
+<a id="javascript" class="anchor" href="#javascript" aria-hidden="true"><span class="octicon octicon-link"></span></a>Javascript</h4>
+
+<pre><code>function myAggregate(data){
+// Data here is a list of data by group (brilliant right! :-) )
+// Do anything here and return result string
+}
+
+var grid = $('#grid').kendoGrid({
+...
+columns: [
+  { field: '', title: '', groupFooterTemplate: myAggregate
+]
+...
+});
+</code></pre>
+
+<h3>
+<a id="good-to-know" class="anchor" href="#good-to-know" aria-hidden="true"><span class="octicon octicon-link"></span></a>Good to Know</h3>
+
+<p>This git repo did not import <em>kendo library</em> because of license.
+Please think about adding it yourself in your project before using it.</p>
+
+<ul>
+<li>AND BUY A LICENSE. (I LOVE KENDO  :-) ) *</li>
+</ul>
+
+<h3>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Todo</h3>
+
+<ul>
+<li><del>Use aggregation with multiple groupBy</del></li>
+<li>Test aggregation with inner details view</li>
+<li>Free memory variable after aggregation complete</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/ChristfriedBalizou">ChristfriedBalizou</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
