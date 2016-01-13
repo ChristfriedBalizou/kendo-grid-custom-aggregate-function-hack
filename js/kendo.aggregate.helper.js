@@ -34,12 +34,12 @@ var jQuery = (function ($, aggregate) {
 
     var kendoGridGroupRowHtml = $.fn.kendoGrid.widget.fn._groupRowHtml;
 
-    $.fn.kendoGrid.widget.fn._groupRowHtml = function (e, t, n, i, r, o) {
-        var str = aggregate.process(this, e);
-        r.groupFooterTemplate = function () {
+    $.fn.kendoGrid.widget.fn._groupRowHtml = function (b, a, l, i, z, o, u) {
+        var str = aggregate.process(this, b);
+        z.groupFooterTemplate = function () {
             return str;
         };
-        return kendoGridGroupRowHtml.call(this, e, t, n, i, r, o);
+        return kendoGridGroupRowHtml.call(this, b, a, l, i, z, o, u);
     };
 
     return $;
